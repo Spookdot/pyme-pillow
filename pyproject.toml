@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "pyme"
+version = "0.1.0"
+description = "A Pillow based image editing package optimized for the creation of memes"
+authors = ["Spookdot <55836077+Spookdot@users.noreply.github.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Pillow = "^8.2.0"
+requests = "^2.25.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
