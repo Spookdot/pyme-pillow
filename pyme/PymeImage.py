@@ -105,7 +105,10 @@ class PymeImage(object):
             bbox[0] if bbox[0] > 0 else 0,
             bbox[1] if bbox[1] > 0 else 0
         ]
-        self._image.paste(image, paste_coords, image)
+        try:
+            self._image.paste(image, paste_coords, image)
+        except ValueError:
+            self._image.paste(image, paste_coords)
 
     def draw_text(self, text: str, bbox: Sequence[Union[int, float]]) -> None:
         """
@@ -124,7 +127,8 @@ class PymeImage(object):
         impact_font = truetype("Impact", 50)
 
         # Measure the area that the text should be drawn on with a dummy ImageDraw
-        size = Draw(new("RGBA", (1, 1))).multiline_textsize(text, impact_font)
+        size = Draw(new("RGBA", (1, 1))).multiline_textbbox((0., 0.), text, impact_font, stroke_width=4)
+        size = [int(i) for i in size[2:]]
 
         # Create the area that the text should be drawn on
         text_background = new("RGBA", size, (0, 0, 0, 0))
