@@ -121,7 +121,7 @@ class PymeImage(object):
             raise ValueError("Bounding box requires 4 arguments")
 
         # Get the impact font
-        impact_font = truetype("impact", 50)
+        impact_font = truetype("Impact", 50)
 
         # Measure the area that the text should be drawn on with a dummy ImageDraw
         size = Draw(new("RGBA", (1, 1))).multiline_textsize(text, impact_font)
@@ -131,7 +131,7 @@ class PymeImage(object):
 
         # Draw text onto the text_background
         text_background_draw = Draw(text_background)
-        text_background_draw.multiline_text((0, 0), text, (0, 0, 0, 255), impact_font)
+        text_background_draw.multiline_text((0, 0), text, (255, 255, 255, 255), impact_font, stroke_width=4, stroke_fill=(0, 0, 0, 255))
 
         # Draw image containing text onto original image
         self.draw_image(text_background, bbox)
