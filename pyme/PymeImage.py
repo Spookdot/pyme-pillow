@@ -30,6 +30,25 @@ class PymeImage(object):
         """
         return self._image
 
+    def _center_image(self, bbox: Sequence[int]) -> Tuple[int, int, int, int]:
+        """
+        Determines a bounding box inside the given bounding box that would center the given image in that area
+        :param bbox: The box inside which to place the image
+        :return: A box that is inside the given box but centered
+        """
+        width_bbox = bbox[2] - bbox[0]
+        height_bbox = bbox[3] - bbox[1]
+
+        width_img = self._image.width
+        height_img = self._image.height
+
+        return (
+            bbox[0] + (width_bbox - width_img) // 2,
+            bbox[1] + (height_bbox - height_img) // 2,
+            bbox[0] + (width_bbox + width_img) // 2,
+            bbox[1] + (height_bbox + height_img) // 2
+        )
+
     def add_padding(self, left: int = 0, top: int = 0, right: int = 0, bottom: int = 0) -> None:
         """
         Adds padding to the Pyme wrapped image
@@ -103,12 +122,15 @@ class PymeImage(object):
         # Paste the image
         paste_coords = [
             bbox[0] if bbox[0] > 0 else 0,
-            bbox[1] if bbox[1] > 0 else 0
+            bbox[1] if bbox[1] > 0 else 0,
+            bbox[2],
+            bbox[3]
         ]
+        paste_coords = PymeImage(image)._center_image(paste_coords)
         try:
-            self._image.paste(image, paste_coords, image)
+            self._image.paste(image, paste_coords[:2], image)
         except ValueError:
-            self._image.paste(image, paste_coords)
+            self._image.paste(image, paste_coords[:2])
 
     def draw_text(self, text: str, bbox: Sequence[Union[int, float]]) -> None:
         """
